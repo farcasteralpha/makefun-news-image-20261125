@@ -271,7 +271,7 @@ function drawRefinery(x: number, y: number, w: number, h: number): void {
   rect(x + 44, y + 14, 16, h - 14, GREY);
   rect(x + 70, y + 32, 16, h - 32, GREY);
   rect(x + 96, y + 8, 20, h - 8, NAVY2);
-  // flame on tallest tower (kept inside the 48 px pictogram box)
+  // flame on tallest tower (kept inside the 44 px pictogram box)
   tri(x + 100, y + 8, x + 106, y + 1, x + 112, y + 8, ORANGE);
   tri(x + 103, y + 8, x + 106, y + 4, x + 109, y + 8, YELLOW);
   // pipes
@@ -281,7 +281,7 @@ function drawRefinery(x: number, y: number, w: number, h: number): void {
 }
 
 function drawChart(x: number, y: number, w: number, h: number): void {
-  // Compact falling-market chart, drawn inside the 48 px pictogram box.
+  // Compact falling-market chart, drawn inside the 44 px pictogram box.
   rect(x, y, w, h, LIGHT);
   // axes
   vline(x + 14, y + 6, h - 14, INK, 2);
@@ -301,16 +301,19 @@ function drawChart(x: number, y: number, w: number, h: number): void {
 }
 
 function drawGavel(x: number, y: number, w: number, h: number): void {
-  // Compact gavel, drawn inside the 48 px pictogram box.
+  // Gavel redrawn: the head is a short diagonal block, the handle runs
+  // near-vertical out of its centre (perpendicular to the head), and the
+  // sound block sits under the handle tip — the old version read as one
+  // long brown bar because head and handle shared one line.
   rect(x, y, w, h, LIGHT);
-  // gavel head, tilted
-  line(x + 28, y + 12, x + 104, y + 32, INK, 14);
-  line(x + 28, y + 12, x + 104, y + 32, [120, 84, 40], 8);
-  // handle
-  line(x + 66, y + 22, x + 148, y + 42, INK, 5);
-  // sound block
-  rect(x + 150, y + 36, 90, 8, NAVY2);
-  rect(x + 158, y + 30, 74, 6, NAVY2);
+  // head: short diagonal block, dark outline then brown fill
+  line(x + 24, y + 10, x + 100, y + 28, INK, 15);
+  line(x + 24, y + 10, x + 100, y + 28, [139, 94, 43], 9);
+  // handle: near-vertical, out of the head's centre
+  line(x + 62, y + 19, x + 69, y + 38, INK, 6);
+  line(x + 62, y + 19, x + 69, y + 38, [90, 60, 25], 3);
+  // sound block under the handle tip
+  rect(x + 44, y + 38, 52, 6, NAVY2);
   // starburst of the verdict
   circle(x + 252, y + 16, 4, RED);
   line(x + 252, y + 4, x + 252, y + 28, RED, 2);
@@ -318,22 +321,23 @@ function drawGavel(x: number, y: number, w: number, h: number): void {
 }
 
 function drawRocket(x: number, y: number): void {
-  // Compact rocket, 84 px tall: nose at y, flame ends at y + 84.
+  // Rocket redrawn larger (~86 px tall, wider body and fins) so it reads
+  // as a rocket instead of a small mark cramped at the band's left edge.
   // (No orbit ring: it crossed the headline text in the first render.)
   // flame
-  tri(x + 52, y + 64, x + 62, y + 84, x + 72, y + 64, ORANGE);
-  tri(x + 56, y + 64, x + 62, y + 78, x + 68, y + 64, YELLOW);
+  tri(x + 52, y + 66, x + 62, y + 84, x + 72, y + 66, ORANGE);
+  tri(x + 56, y + 66, x + 62, y + 80, x + 68, y + 66, YELLOW);
   // body
-  ellipse(x + 62, y + 38, 14, 26, WHITE);
-  frame(x + 48, y + 12, 28, 52, INK, 2);
+  ellipse(x + 62, y + 40, 17, 30, WHITE);
+  frame(x + 45, y + 14, 34, 58, INK, 2);
   // nose
-  tri(x + 48, y + 12, x + 76, y + 12, x + 62, y, RED);
+  tri(x + 45, y + 14, x + 79, y + 14, x + 62, y, RED);
   // fins
-  tri(x + 48, y + 54, x + 34, y + 72, x + 48, y + 66, RED);
-  tri(x + 76, y + 54, x + 90, y + 72, x + 76, y + 66, RED);
+  tri(x + 45, y + 58, x + 30, y + 78, x + 45, y + 70, RED);
+  tri(x + 79, y + 58, x + 94, y + 78, x + 79, y + 70, RED);
   // window
-  circle(x + 62, y + 32, 6, NAVY2);
-  circle(x + 62, y + 32, 3, SKY);
+  circle(x + 62, y + 34, 7, NAVY2);
+  circle(x + 62, y + 34, 3, SKY);
 }
 
 // ---------------------------------------------------------------- page
@@ -367,7 +371,7 @@ function draw(): void {
       x: 16, kicker: "EUROPE", kick: RED,
       head: "UKRAINE HITS TWO REFINERIES",
       pic: drawRefinery,
-      body: "UKRAINE STRUCK THE SYZRAN AND KUIBYSHEV ROSNEFT REFINERIES IN SAMARA OVERNIGHT. ONE PERSON WAS KILLED. POLAND PLANS A NO-FLY ZONE AND ASKED NATO TO WEIGH DOWNING MISSILES.",
+      body: "UKRAINE STRUCK THE SYZRAN AND KUIBYSHEV REFINERIES IN SAMARA, KILLING ONE PERSON. POLAND PLANS A NO-FLY ZONE ON ITS EASTERN BORDER AND ASKED NATO TO CONSIDER DOWNING RUSSIAN MISSILES OVER UKRAINE.",
     },
     {
       x: 352, kicker: "MARKETS", kick: NAVY2,
@@ -387,15 +391,15 @@ function draw(): void {
     frame(c.x, 440, 320, 290, INK, 2);
     drawText(c.x + 12, 452, c.kicker, 2, c.kick);
     const headLines = wrap(c.head, 296, 3);
-    headLines.forEach((ln, i) => drawText(c.x + 12, 478 + i * 26, ln, 3, INK));
-    const picY = 478 + headLines.length * 26 + 8;
-    c.pic(c.x + 12, picY, 296, 48);
-    drawPara(c.x + 12, picY + 48 + 8, c.body, 296, 2, INK, 15);
+    headLines.forEach((ln, i) => drawText(c.x + 12, 478 + i * 24, ln, 3, INK));
+    const picY = 478 + headLines.length * 24 + 4;
+    c.pic(c.x + 12, picY, 296, 44);
+    drawPara(c.x + 12, picY + 44 + 6, c.body, 296, 2, INK, 15);
   }
 
   // ---- space band
   rect(16, 742, 992, 90, NAVY);
-  drawRocket(28, 748);
+  drawRocket(30, 744);
   drawText(150, 754, "PAKISTAN'S FIRST ASTRONAUT REACHES ORBIT", 3, WHITE);
   drawPara(
     150, 788,
